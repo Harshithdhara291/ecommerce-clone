@@ -5,6 +5,8 @@ import CartContext from '../../context/CartContext'
 
 import './index.css'
 
+// Header
+
 const Header = props => {
   const onClickLogout = () => {
     const {history} = props

@@ -28,4 +28,6 @@ const SimilarProductItem = props => {
   )
 }
 
+//
+
 export default SimilarProductItem

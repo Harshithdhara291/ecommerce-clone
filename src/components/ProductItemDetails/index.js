@@ -12,6 +12,8 @@ import SimilarProductItem from '../SimilarProductItem'
 
 import './index.css'
 
+//
+
 const apiStatusConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',

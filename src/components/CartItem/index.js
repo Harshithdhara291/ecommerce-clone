@@ -5,6 +5,8 @@ import CartContext from '../../context/CartContext'
 
 import './index.css'
 
+// cartItem
+
 const CartItem = props => (
   <CartContext.Consumer>
     {value => {

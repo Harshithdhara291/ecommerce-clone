@@ -1,7 +1,7 @@
 .product-item-details-container {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 31px;
 }
 
 @media screen and (min-width: 768px) {

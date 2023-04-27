@@ -13,6 +13,8 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
+// PrimeDealsSection
+
 const PrimeDealsSection = () => {
   const [primeDeals, setPrimeDeals] = useState([])
   const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial)

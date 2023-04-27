@@ -2,6 +2,8 @@ import {BsSearch} from 'react-icons/bs'
 
 import './index.css'
 
+// FiltersGroup
+
 const FiltersGroup = props => {
   const renderRatingsFiltersList = () => {
     const {ratingsList} = props
