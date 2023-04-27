@@ -1,14 +1,14 @@
-import React from 'react'
+/* eslint-disable prettier/prettier */
+// /* eslint-disable prettier/prettier */
+// import {createContext} from 'react'
 
-const CartContext = React.createContext({
-  cartList: [],
-  removeAllCartItems: () => {},
-  addCartItem: () => {},
-  removeCartItem: () => {},
-  incrementCartItemQuantity: () => {},
-  decrementCartItemQuantity: () => {},
-})
+// const CartContext = createContext({
+//     cartList: [],
+//     removeAllCartItems: () => {},
+//     addCartItem: () => {},
+//     removeCartItem: () => {},
+//     incrementCartItemQuantity: () => {},
+//     decrementCartItemQuantity: () => {},
+//   })
 
-//
-
-export default CartContext
+// export default CartContext

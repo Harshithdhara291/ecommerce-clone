@@ -1,12 +1,15 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/named */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import {BsPlusSquare, BsDashSquare} from 'react-icons/bs'
-
-import CartContext from '../../context/CartContext'
-
+import {useAddItem} from '../../context/CartState'
 import Header from '../Header'
 import SimilarProductItem from '../SimilarProductItem'
 
@@ -26,6 +29,8 @@ const ProductItemDetails = props => {
   const [similarProductsData, setSimilarProductsData] = useState([])
   const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial)
   const [quantity, setQuantity] = useState(1)
+
+  const addCartItem = useAddItem()
 
   const getFormattedData = data => ({
     availability: data.availability,
@@ -71,7 +76,9 @@ const ProductItemDetails = props => {
   }
 
   useEffect(() => {
+    const ac = new AbortController()
     getProductData()
+    return () => ac.abort()
   }, [])
 
   const renderLoadingView = () => (
@@ -106,92 +113,87 @@ const ProductItemDetails = props => {
     setQuantity(prev => prev + 1)
   }
 
-  const renderProductDetailsView = () => (
-    <CartContext.Consumer>
-      {value => {
-        const {
-          availability,
-          brand,
-          description,
-          imageUrl,
-          price,
-          rating,
-          title,
-          totalReviews,
-        } = productData
-        const {addCartItem} = value
-        const onClickAddToCart = () => {
-          addCartItem({...productData, quantity})
-        }
+  const renderProductDetailsView = () => {
+    const {
+      availability,
+      brand,
+      description,
+      imageUrl,
+      price,
+      rating,
+      title,
+      totalReviews,
+    } = productData
+    const onClickAddToCart = () => {
+      addCartItem({...productData, quantity})
+    }
 
-        return (
-          <div className="product-details-success-view">
-            <div className="product-details-container">
-              <img src={imageUrl} alt="product" className="product-image" />
-              <div className="product">
-                <h1 className="product-name">{title}</h1>
-                <p className="price-details">Rs {price}/-</p>
-                <div className="rating-and-reviews-count">
-                  <div className="rating-container">
-                    <p className="rating">{rating}</p>
-                    <img
-                      src="https://assets.ccbp.in/frontend/react-js/star-img.png"
-                      alt="star"
-                      className="star"
-                    />
-                  </div>
-                  <p className="reviews-count">{totalReviews} Reviews</p>
-                </div>
-                <p className="product-description">{description}</p>
-                <div className="label-value-container">
-                  <p className="label">Available:</p>
-                  <p className="value">{availability}</p>
-                </div>
-                <div className="label-value-container">
-                  <p className="label">Brand:</p>
-                  <p className="value">{brand}</p>
-                </div>
-                <hr className="horizontal-line" />
-                <div className="quantity-container">
-                  <button
-                    type="button"
-                    className="quantity-controller-button"
-                    onClick={onDecrementQuantity}
-                  >
-                    <BsDashSquare className="quantity-controller-icon" />
-                  </button>
-                  <p className="quantity">{quantity}</p>
-                  <button
-                    type="button"
-                    className="quantity-controller-button"
-                    onClick={onIncrementQuantity}
-                  >
-                    <BsPlusSquare className="quantity-controller-icon" />
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  className="button add-to-cart-btn"
-                  onClick={onClickAddToCart}
-                >
-                  ADD TO CART
-                </button>
-              </div>
-            </div>
-            <h1 className="similar-products-heading">Similar Products</h1>
-            <ul className="similar-products-list">
-              {similarProductsData.map(eachSimilarProduct => (
-                <SimilarProductItem
-                  productDetails={eachSimilarProduct}
-                  key={eachSimilarProduct.id}
+    return (
+      <div className="product-details-success-view">
+        <div className="product-details-container">
+          <img src={imageUrl} alt="product" className="product-image" />
+          <div className="product">
+            <h1 className="product-name">{title}</h1>
+            <p className="price-details">Rs {price}/-</p>
+            <div className="rating-and-reviews-count">
+              <div className="rating-container">
+                <p className="rating">{rating}</p>
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+                  alt="star"
+                  className="star"
                 />
-              ))}
-            </ul>
+              </div>
+              <p className="reviews-count">{totalReviews} Reviews</p>
+            </div>
+            <p className="product-description">{description}</p>
+            <div className="label-value-container">
+              <p className="label">Available:</p>
+              <p className="value">{availability}</p>
+            </div>
+            <div className="label-value-container">
+              <p className="label">Brand:</p>
+              <p className="value">{brand}</p>
+            </div>
+            <hr className="horizontal-line" />
+            <div className="quantity-container">
+              <button
+                type="button"
+                className="quantity-controller-button"
+                onClick={onDecrementQuantity}
+              >
+                <BsDashSquare className="quantity-controller-icon" />
+              </button>
+              <p className="quantity">{quantity}</p>
+              <button
+                type="button"
+                className="quantity-controller-button"
+                onClick={onIncrementQuantity}
+              >
+                <BsPlusSquare className="quantity-controller-icon" />
+              </button>
+            </div>
+            <button
+              type="button"
+              className="button add-to-cart-btn"
+              onClick={onClickAddToCart}
+            >
+              ADD TO CART
+            </button>
           </div>
-        )
-      }}
-    </CartContext.Consumer>
-  )
+        </div>
+        <h1 className="similar-products-heading">Similar Products</h1>
+        <ul className="similar-products-list">
+          {similarProductsData.map(eachSimilarProduct => (
+            <SimilarProductItem
+              productDetails={eachSimilarProduct}
+              key={eachSimilarProduct.id}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
 
   const renderProductDetails = () => {
     switch (apiStatus) {

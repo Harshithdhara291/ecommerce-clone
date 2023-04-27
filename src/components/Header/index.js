@@ -1,7 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
 import {Link, withRouter} from 'react-router-dom'
 import Cookies from 'js-cookie'
-
-import CartContext from '../../context/CartContext'
+import {useCartList} from '../../context/CartState'
 
 import './index.css'
 
@@ -13,23 +13,19 @@ const Header = props => {
     Cookies.remove('jwt_token')
     history.replace('/login')
   }
+  const cartList = useCartList()
 
-  const renderCartItemsCount = () => (
-    <CartContext.Consumer>
-      {value => {
-        const {cartList} = value
-        const cartItemsCount = cartList.length
+  const renderCartItemsCount = () => {
+    const cartItemsCount = cartList.length
 
-        return (
-          <>
-            {cartItemsCount > 0 ? (
-              <span className="cart-count-badge">{cartList.length}</span>
-            ) : null}
-          </>
-        )
-      }}
-    </CartContext.Consumer>
-  )
+    return (
+      <>
+        {cartItemsCount > 0 ? (
+          <span className="cart-count-badge">{cartList.length}</span>
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <nav className="nav-header">
