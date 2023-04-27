@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import {useState, useEffect} from 'react'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 
@@ -13,20 +13,12 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class PrimeDealsSection extends Component {
-  state = {
-    primeDeals: [],
-    apiStatus: apiStatusConstants.initial,
-  }
+const PrimeDealsSection = () => {
+  const [primeDeals, setPrimeDeals] = useState([])
+  const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial)
 
-  componentDidMount() {
-    this.getPrimeDeals()
-  }
-
-  getPrimeDeals = async () => {
-    this.setState({
-      apiStatus: apiStatusConstants.inProgress,
-    })
+  const getPrimeDeals = async () => {
+    setApiStatus(apiStatusConstants.inProgress)
 
     const jwtToken = Cookies.get('jwt_token')
 
@@ -48,33 +40,30 @@ class PrimeDealsSection extends Component {
         imageUrl: product.image_url,
         rating: product.rating,
       }))
-      this.setState({
-        primeDeals: updatedData,
-        apiStatus: apiStatusConstants.success,
-      })
+      setPrimeDeals(updatedData)
+      setApiStatus(apiStatusConstants.success)
     }
     if (response.status === 401) {
-      this.setState({
-        apiStatus: apiStatusConstants.failure,
-      })
+      setApiStatus(apiStatusConstants.failure)
     }
   }
 
-  renderPrimeDealsListView = () => {
-    const {primeDeals} = this.state
-    return (
-      <div>
-        <h1 className="primedeals-list-heading">Exclusive Prime Deals</h1>
-        <ul className="products-list">
-          {primeDeals.map(product => (
-            <ProductCard productData={product} key={product.id} />
-          ))}
-        </ul>
-      </div>
-    )
-  }
+  useEffect(() => {
+    getPrimeDeals()
+  }, [])
 
-  renderPrimeDealsFailureView = () => (
+  const renderPrimeDealsListView = () => (
+    <div>
+      <h1 className="primedeals-list-heading">Exclusive Prime Deals</h1>
+      <ul className="products-list">
+        {primeDeals.map(product => (
+          <ProductCard productData={product} key={product.id} />
+        ))}
+      </ul>
+    </div>
+  )
+
+  const renderPrimeDealsFailureView = () => (
     <img
       src="https://assets.ccbp.in/frontend/react-js/exclusive-deals-banner-img.png"
       alt="register prime"
@@ -82,24 +71,20 @@ class PrimeDealsSection extends Component {
     />
   )
 
-  renderLoadingView = () => (
+  const renderLoadingView = () => (
     <div className="primedeals-loader-container">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )
-
-  render() {
-    const {apiStatus} = this.state
-    switch (apiStatus) {
-      case apiStatusConstants.success:
-        return this.renderPrimeDealsListView()
-      case apiStatusConstants.failure:
-        return this.renderPrimeDealsFailureView()
-      case apiStatusConstants.inProgress:
-        return this.renderLoadingView()
-      default:
-        return null
-    }
+  switch (apiStatus) {
+    case apiStatusConstants.success:
+      return renderPrimeDealsListView()
+    case apiStatusConstants.failure:
+      return renderPrimeDealsFailureView()
+    case apiStatusConstants.inProgress:
+      return renderLoadingView()
+    default:
+      return null
   }
 }
 

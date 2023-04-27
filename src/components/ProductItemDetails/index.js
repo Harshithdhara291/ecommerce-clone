@@ -1,4 +1,5 @@
-import {Component} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
@@ -18,19 +19,13 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class ProductItemDetails extends Component {
-  state = {
-    productData: {},
-    similarProductsData: [],
-    apiStatus: apiStatusConstants.initial,
-    quantity: 1,
-  }
+const ProductItemDetails = props => {
+  const [productData, setProductData] = useState({})
+  const [similarProductsData, setSimilarProductsData] = useState([])
+  const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial)
+  const [quantity, setQuantity] = useState(1)
 
-  componentDidMount() {
-    this.getProductData()
-  }
-
-  getFormattedData = data => ({
+  const getFormattedData = data => ({
     availability: data.availability,
     brand: data.brand,
     description: data.description,
@@ -42,14 +37,13 @@ class ProductItemDetails extends Component {
     totalReviews: data.total_reviews,
   })
 
-  getProductData = async () => {
-    const {match} = this.props
+  const getProductData = async () => {
+    const {match} = props
     const {params} = match
     const {id} = params
 
-    this.setState({
-      apiStatus: apiStatusConstants.inProgress,
-    })
+    setApiStatus(apiStatusConstants.inProgress)
+
     const jwtToken = Cookies.get('jwt_token')
     const apiUrl = `https://apis.ccbp.in/products/${id}`
     const options = {
@@ -61,30 +55,30 @@ class ProductItemDetails extends Component {
     const response = await fetch(apiUrl, options)
     if (response.ok) {
       const fetchedData = await response.json()
-      const updatedData = this.getFormattedData(fetchedData)
+      const updatedData = getFormattedData(fetchedData)
       const updatedSimilarProductsData = fetchedData.similar_products.map(
-        eachSimilarProduct => this.getFormattedData(eachSimilarProduct),
+        eachSimilarProduct => getFormattedData(eachSimilarProduct),
       )
-      this.setState({
-        productData: updatedData,
-        similarProductsData: updatedSimilarProductsData,
-        apiStatus: apiStatusConstants.success,
-      })
+      setProductData(updatedData)
+      setSimilarProductsData(updatedSimilarProductsData)
+      setApiStatus(apiStatusConstants.success)
     }
     if (response.status === 404) {
-      this.setState({
-        apiStatus: apiStatusConstants.failure,
-      })
+      setApiStatus(apiStatusConstants.failure)
     }
   }
 
-  renderLoadingView = () => (
+  useEffect(() => {
+    getProductData()
+  }, [])
+
+  const renderLoadingView = () => (
     <div className="products-details-loader-container">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )
 
-  renderFailureView = () => (
+  const renderFailureView = () => (
     <div className="product-details-error-view-container">
       <img
         alt="error view"
@@ -100,21 +94,19 @@ class ProductItemDetails extends Component {
     </div>
   )
 
-  onDecrementQuantity = () => {
-    const {quantity} = this.state
+  const onDecrementQuantity = () => {
     if (quantity > 1) {
-      this.setState(prevState => ({quantity: prevState.quantity - 1}))
+      setQuantity(prev => prev - 1)
     }
   }
 
-  onIncrementQuantity = () => {
-    this.setState(prevState => ({quantity: prevState.quantity + 1}))
+  const onIncrementQuantity = () => {
+    setQuantity(prev => prev + 1)
   }
 
-  renderProductDetailsView = () => (
+  const renderProductDetailsView = () => (
     <CartContext.Consumer>
       {value => {
-        const {productData, quantity, similarProductsData} = this.state
         const {
           availability,
           brand,
@@ -162,7 +154,7 @@ class ProductItemDetails extends Component {
                   <button
                     type="button"
                     className="quantity-controller-button"
-                    onClick={this.onDecrementQuantity}
+                    onClick={onDecrementQuantity}
                   >
                     <BsDashSquare className="quantity-controller-icon" />
                   </button>
@@ -170,7 +162,7 @@ class ProductItemDetails extends Component {
                   <button
                     type="button"
                     className="quantity-controller-button"
-                    onClick={this.onIncrementQuantity}
+                    onClick={onIncrementQuantity}
                   >
                     <BsPlusSquare className="quantity-controller-icon" />
                   </button>
@@ -199,31 +191,27 @@ class ProductItemDetails extends Component {
     </CartContext.Consumer>
   )
 
-  renderProductDetails = () => {
-    const {apiStatus} = this.state
-
+  const renderProductDetails = () => {
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderProductDetailsView()
+        return renderProductDetailsView()
       case apiStatusConstants.failure:
-        return this.renderFailureView()
+        return renderFailureView()
       case apiStatusConstants.inProgress:
-        return this.renderLoadingView()
+        return renderLoadingView()
       default:
         return null
     }
   }
 
-  render() {
-    return (
-      <>
-        <Header />
-        <div className="product-item-details-container">
-          {this.renderProductDetails()}
-        </div>
-      </>
-    )
-  }
+  return (
+    <>
+      <Header />
+      <div className="product-item-details-container">
+        {renderProductDetails()}
+      </div>
+    </>
+  )
 }
 
 export default ProductItemDetails
