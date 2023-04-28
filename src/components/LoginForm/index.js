@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable arrow-body-style */
-/* eslint-disable no-undef */
+/*  eslint-disable no-undef */
 /* eslint-disable prettier/prettier */
 import {useState} from 'react'
 import Cookies from 'js-cookie'

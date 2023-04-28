@@ -1,7 +1,8 @@
 .nav-header {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rgb(243, 243, 243);
+  border-bottom: 2px solid rgb(241, 237, 237);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.09);
 }
 
 @media screen and (max-width: 767px) {
@@ -108,6 +109,7 @@
   margin: 10px;
   font-weight: 400;
   font-size: 16px;
+  position: relative;
 }
 
 .nav-link {
@@ -120,12 +122,13 @@
 .nav-menu-item-mobile {
   margin: 0px;
   cursor: pointer;
+  position: relative;
 }
 
 .logout-desktop-btn {
   font-family: 'Roboto';
-  font-weight: 600;
-  font-size: 10px;
+  font-weight: 500;
+  font-size: 12px;
   padding: 8px 16px;
   color: #ffffff;
   background-color: #0967d2;
@@ -172,7 +175,10 @@
   padding-right: 5px;
   padding-bottom: 2px;
   margin-left: 8px;
-}
+  position: absolute;
+  top: -9px;
+  right: -9px; 
+  }
 
 @media screen and (min-width: 768px) {
   .cart-count-badge {

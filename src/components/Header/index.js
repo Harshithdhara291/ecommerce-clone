@@ -22,7 +22,9 @@ const Header = props => {
       <>
         {cartItemsCount > 0 ? (
           <span className="cart-count-badge">{cartList.length}</span>
-        ) : null}
+        ) : (
+          <span className="cart-count-badge">0</span>
+        )}
       </>
     )
   }

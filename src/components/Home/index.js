@@ -3,8 +3,6 @@ import Header from '../Header'
 
 import './index.css'
 
-// Home
-
 const Home = () => (
   <>
     <Header />

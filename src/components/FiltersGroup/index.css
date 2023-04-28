@@ -16,16 +16,18 @@
   display: flex;
   align-items: center;
   background-color: #f1f5f9;
-  border-radius: 8px;
-  padding-left: 16px;
-  padding-top: 8px;
+  border-radius: 10px;
+  padding-left: 18px;
+  padding-top: 10px;
   padding-bottom: 8px;
-  padding-right: 16px;
+  padding-right: 18px;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: 300ms ease-in-out;
 }
 
 .search-input {
-  background-color: #f1f5f9;
   color: #0f172a;
+  background-color: #f1f5f9;
   font-family: 'Roboto';
   font-size: 14px;
   font-weight: 500;

@@ -105,13 +105,13 @@ const CartState = ({children}) => {
   return (
     <CartList.Provider value={cartList}>
       <AddItemContext.Provider value={addCartItem}>
-       <RemoveItemContext.Provider value={removeCartItem}>
-         <RemoveAllItemsContext.Provider value={removeAllCartItems}>
+        <RemoveItemContext.Provider value={removeCartItem}>
+          <RemoveAllItemsContext.Provider value={removeAllCartItems}>
             <IncrementItemContext.Provider value={incrementCartItemQuantity}>
-               <DecrementItemContext.Provider value={decrementCartItemQuantity}>
-                  {children}
-               </DecrementItemContext.Provider>
-             </IncrementItemContext.Provider>
+              <DecrementItemContext.Provider value={decrementCartItemQuantity}>
+                {children}
+              </DecrementItemContext.Provider>
+            </IncrementItemContext.Provider>
           </RemoveAllItemsContext.Provider>
         </RemoveItemContext.Provider>
       </AddItemContext.Provider>
