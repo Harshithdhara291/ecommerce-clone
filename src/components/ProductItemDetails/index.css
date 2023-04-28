@@ -223,9 +223,9 @@
     outline: 2px solid #70bdca;
     box-shadow: 4px 5px 17px -4px #268391;
   }
-  
+
   .add-to-cart-btn::before {
-    content: "";
+    content: '';
     position: absolute;
     left: -50px;
     top: 0;
@@ -236,11 +236,10 @@
     z-index: -1;
     transition: width 1000ms;
   }
-  
+
   .add-to-cart-btn:hover::before {
     width: 250%;
   }
-
 }
 
 .similar-products-heading {
