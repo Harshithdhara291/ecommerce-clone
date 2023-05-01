@@ -29,7 +29,6 @@ const Cart = () => {
   }
 
   const orderPlacedView = () => {
-    onClickRemoveAllBtn()
     const orderId = Math.floor(
       Math.pow(10, 5) + Math.random() * (Math.pow(10, 6) - Math.pow(10, 5) - 1),
     )
@@ -82,19 +81,19 @@ const Cart = () => {
           </h1>
           <p className="total-items">{cartList.length} Items in cart</p>
           <button
-            onClick={handleView}
+            onClick={() => setTimeout(handleView, 2000)}
             type="button"
             className="checkout-button d-sm-none"
           >
-            Checkout
+            Place Order
           </button>
         </div>
         <button
-          onClick={handleView}
+          onClick={() => setTimeout(handleView, 2000)}
           type="button"
           className="checkout-button d-lg-none"
         >
-          Checkout
+          Place Order
         </button>
       </div>
     </>
